@@ -1,0 +1,79 @@
+push   %ebp			# the first 4 instractions are part of the call procedure(saving reg e.x)
+mov    %esp,%ebp
+sub    $0x38,%esp
+movl   $0x0,-0xc(%ebp)
+
+mov    0x80e3434,%eax           # the nect 6 instactions are the call procedure before and after the call 
+sub    $0xc,%esp                # of the fgetchar function and ofcource the actual call.
+push   %eax
+call   0x8059530 <getc>
+add    $0x10,%esp
+mov    %eax,-0x10(%ebp)          
+
+cmpl   $0xffffffff,-0x10(%ebp)   # the next 4 instraction are the contintion in the wille statement. 
+je     0x8049df4 <readString+63> # there are two comparasons (with EOF and \n) and if eny of them
+cmpl   $0xa,-0x10(%ebp)          # is equal we jump outside the loop.(break)
+je     0x8049df4 <readString+63>
+
+mov    -0xc(%ebp),%eax            # if we are here the imput wasnt EOF or \n so we but it in the buff
+lea    0x1(%eax),%edx             # and incement the counter i. That takes the next 5 instractions. 
+mov    %edx,-0xc(%ebp)
+mov    -0x10(%ebp),%edx
+mov    %dl,-0x2e(%ebp,%eax,1)
+
+jmp    0x8049dc2 <readString+13> # we dint break out of the loop so we jump again to the begining of the wille.
+
+lea    -0x2e(%ebp),%edx          # now we are out of the loop and we add the 0 at the end of the buf(intex i).
+mov    -0xc(%ebp),%eax           # takes the next 3 instractions
+add    %edx,%eax
+
+movb   $0x0,(%eax)              # here we initialize the couter of the for loop with 0, 2 instractions
+movl   $0x0,-0xc(%ebp)
+
+jmp    0x8049e21 <readString+108> # here we jump to the contition for the for loop 
+                                  #(we jump to the cmpl bellow and if the contition is true we return to the next from this instraction
+                                  # else we continieu bellow the cmpl)
+
+mov    -0xc(%ebp),%edx            # here the contition is true so we run the body of the for loop (s[i] = buf[i];) next 9 instraction.
+mov    0x8(%ebp),%eax
+add    %eax,%edx
+lea    -0x2e(%ebp),%ecx
+mov    -0xc(%ebp),%eax
+add    %ecx,%eax
+movzbl (%eax),%eax
+mov    %al,(%edx)
+addl   $0x1,-0xc(%ebp)
+
+cmpl   $0x1d,-0xc(%ebp)          # we compair the couter with the buffersize 
+jle    0x8049e08 <readString+83> # if the contition is true we jump to the body of the for loop else we continiue below.
+
+nop				# exited the for loop and we run the return procedure 
+leave                           # fix frame
+ret				# return controll to parent
+
+
+
+
+data section:
+
+	grade :0x80e3068  | 3 |  
+
+bss section:
+	
+	Name :0x80e42dc   | George\0...... |
+
+stack-frame:
+       
+ 	esp:  |0xbffff410|
+	ebp:  |0xbffff448|
+
+	from the esp the first 10 bytes are irelevant next
+	buff:0xbffff41a - 0xbffff437
+	c : 0xbffff438 - 0xbffff43b
+	i : 0xbffff43c - 0xbffff43f
+	0xbffff440 - 0xbffff447 are irelevant
+	ebp: 0xbffff448 - 0xbffff44b
+	return address : 0xbffff44c - 0xbffff44f
+	s : 0xbffff450 - 0xbffff453
+
+
