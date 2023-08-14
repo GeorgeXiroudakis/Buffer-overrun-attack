@@ -14,7 +14,7 @@ that when given as the std input to the hello excecutable creates the desired re
 
 ## intro
 
-## hello.c
+### hello.c
 
 hello.c is the program that the atack is based on.
 basically it askes your name and based on that it printes a personalised message
@@ -23,14 +23,14 @@ with that name and the grade it recomments you get.
 it recomments 3 for everyone exept for the input Angelos Bilas(name of the proffesor)
 where it recommets you get 6.
 
-## treces
+### treces
 in the traces file there are the assebly instractions for the readString function of hello.c
 with comments, bellow there are the addresses of some key values in from runtime.
 
 both were extracted from the hello file using a debuger like gdb, and they are necessary to adderstant the 
 stacture of the progeam in runtime and how to maniputate it with the input.
 
-## createdata
+### createdata
 The aim was to create 4 different stages of atack with increasing difficulty
 
 ### data3.c
